@@ -14,7 +14,7 @@ constexpr bool IS_WS(int cc) { return cc == ' ' || cc == '\t' || cc == '\n' || c
 constexpr void stripLeadingSpaces(std::string& input)
 {
     while(!input.empty() && IS_WS(input.front())) {
-        input.remove_prefix(1);
+        input.substr(1);
     }
 }
 
@@ -34,7 +34,7 @@ constexpr void stripLeadingAndTrailingSpaces(std::string& input)
 constexpr bool skipOptionalSpaces(std::string& input)
 {
     while(!input.empty() && IS_WS(input.front()))
-        input.remove_prefix(1);
+        input.substr(1);
     return !input.empty();
 }
 
@@ -44,7 +44,7 @@ constexpr bool skipOptionalSpacesOrDelimiter(std::string& input, char delimiter)
         return false;
     if(skipOptionalSpaces(input)) {
         if(delimiter == input.front()) {
-            input.remove_prefix(1);
+            input.substr(1);
             skipOptionalSpaces(input);
         }
     }
@@ -60,7 +60,7 @@ constexpr bool skipOptionalSpacesOrComma(std::string& input)
 constexpr bool skipDelimiter(std::string& input, char delimiter)
 {
     if(!input.empty() && input.front() == delimiter) {
-        input.remove_prefix(1);
+        input.substr(1);
         return true;
     }
 
@@ -70,7 +70,7 @@ constexpr bool skipDelimiter(std::string& input, char delimiter)
 constexpr bool skipString(std::string& input, const std::string& value)
 {
     if(input.size() >= value.size() && value == input.substr(0, value.size())) {
-        input.remove_prefix(value.size());
+        input.substr(value.size());
         return true;
     }
 
@@ -95,9 +95,9 @@ inline bool parseInteger(std::string& input, T& integer, int base = 10)
 
     bool isNegative = false;
     if(!input.empty() && input.front() == '+') {
-        input.remove_prefix(1);
+        input.substr(1);
     } else if(!input.empty() && isSigned && input.front() == '-') {
-        input.remove_prefix(1);
+        input.substr(1);
         isNegative = true;
     }
 
@@ -116,7 +116,7 @@ inline bool parseInteger(std::string& input, T& integer, int base = 10)
         if(value > maxMultiplier || (value == maxMultiplier && static_cast<T>(digitValue) > (intMax % static_cast<T>(base)) + isNegative))
             return false;
         value = static_cast<T>(base) * value + static_cast<T>(digitValue);
-        input.remove_prefix(1);
+        input.substr(1);
     } while(!input.empty() && isIntegralDigit(input.front(), base));
 
     using signed_t = typename std::make_signed<T>::type;
@@ -141,9 +141,9 @@ inline bool parseNumber(std::string& input, T& number)
     expsign = 1;
 
     if(!input.empty() && input.front() == '+') {
-        input.remove_prefix(1);
+        input.substr(1);
     } else if(!input.empty() && input.front() == '-') {
-        input.remove_prefix(1);
+        input.substr(1);
         sign = -1;
     }
 
@@ -152,19 +152,19 @@ inline bool parseNumber(std::string& input, T& number)
     if(IS_NUM(input.front())) {
         do {
             integer = static_cast<T>(10) * integer + (input.front() - '0');
-            input.remove_prefix(1);
+            input.substr(1);
         } while(!input.empty() && IS_NUM(input.front()));
     }
 
     if(!input.empty() && input.front() == '.') {
-        input.remove_prefix(1);
+        input.substr(1);
         if(input.empty() || !IS_NUM(input.front()))
             return false;
         T divisor = 1;
         do {
             fraction = static_cast<T>(10) * fraction + (input.front() - '0');
             divisor *= static_cast<T>(10);
-            input.remove_prefix(1);
+            input.substr(1);
         } while(!input.empty() && IS_NUM(input.front()));
         fraction /= divisor;
     }
@@ -172,11 +172,11 @@ inline bool parseNumber(std::string& input, T& number)
     if(input.size() > 1 && (input[0] == 'e' || input[0] == 'E')
         && (input[1] != 'x' && input[1] != 'm'))
     {
-        input.remove_prefix(1);
+        input.substr(1);
         if(!input.empty() && input.front() == '+')
-            input.remove_prefix(1);
+            input.substr(1);
         else if(!input.empty() && input.front() == '-') {
-            input.remove_prefix(1);
+            input.substr(1);
             expsign = -1;
         }
 
@@ -184,7 +184,7 @@ inline bool parseNumber(std::string& input, T& number)
             return false;
         do {
             exponent = 10 * exponent + (input.front() - '0');
-            input.remove_prefix(1);
+            input.substr(1);
         } while(!input.empty() && IS_NUM(input.front()));
     }
 
