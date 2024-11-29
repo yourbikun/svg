@@ -14,6 +14,13 @@ const Rect Rect::Empty(0, 0, 0, 0);
 const Rect Rect::Invalid(0, 0, -1, -1);
 const Rect Rect::Infinite(-FLT_MAX / 2.f, -FLT_MAX / 2.f, FLT_MAX, FLT_MAX);
 
+Color Color::colorWithAlpha(float opacity) const
+{
+    auto rgb = m_value & 0x00FFFFFF;
+    auto a = static_cast<int>(alpha() * clamp(opacity, 0.f, 1.f));
+    return Color(rgb | a << 24);
+}
+
 Rect::Rect(const Box& box)
     : x(box.x), y(box.y), w(box.w), h(box.h)
 {
