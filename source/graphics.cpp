@@ -26,6 +26,21 @@ Rect::Rect(const Box& box)
 {
 }
 
+constexpr Rect Rect::intersected(const Rect& rect) const
+{
+    if(!rect.isValid())
+        return *this;
+    if(!isValid())
+        return rect;
+    auto l = std::max(x, rect.x);
+    auto t = std::max(y, rect.y);
+    auto r = std::min(x + w, rect.x + rect.w);
+    auto b = std::min(y + h, rect.y + rect.h);
+    if(l >= r || t >= b)
+        return Rect::Empty;
+    return Rect(l, t, r - l, b - t);
+}
+
 const Transform Transform::Identity(1, 0, 0, 1, 0, 0);
 
 Transform::Transform()
