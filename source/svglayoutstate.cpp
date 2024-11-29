@@ -14,8 +14,10 @@ static Optional<Color> parseColorValue(std::string& input, const SVGLayoutState*
 
     plutovg_color_t color;
     int length = plutovg_color_parse(&color, input.data(), input.length());
-    if(length == 0)
-        return Optional<Color>{nullopt};
+    if (length == 0) {
+        Optional<Color> empty;  // 使用默认构造函数，表示没有值
+        return empty;
+    }
 
     input.substr(length);
     return Color(plutovg_color_to_argb32(&color));
