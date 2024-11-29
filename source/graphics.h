@@ -97,8 +97,8 @@ public:
     // constexpr void move(float d) { move(d, d); }
     // constexpr void move(const Point& p) { move(p.x, p.y); }
 
-    constexpr void scale(float sx, float sy) { x *= sx; y *= sy; }
-    constexpr void scale(float s) { scale(s, s); }
+    // constexpr void scale(float sx, float sy) { x *= sx; y *= sy; }
+    // constexpr void scale(float s) { scale(s, s); }
 
     constexpr float dot(const Point& p) const { return x * p.x + y * p.y; }
 
@@ -144,12 +144,12 @@ public:
     constexpr Size() = default;
     constexpr Size(float w, float h) : w(w), h(h) {}
 
-    constexpr void expand(float dw, float dh) { w += dw; h += dh; }
-    constexpr void expand(float d) { expand(d, d); }
-    constexpr void expand(const Size& s) { expand(s.w, s.h); }
+    // constexpr void expand(float dw, float dh) { w += dw; h += dh; }
+    // constexpr void expand(float d) { expand(d, d); }
+    // constexpr void expand(const Size& s) { expand(s.w, s.h); }
 
-    constexpr void scale(float sw, float sh) { w *= sw; h *= sh; }
-    constexpr void scale(float s) { scale(s, s); }
+    // constexpr void scale(float sw, float sh) { w *= sw; h *= sh; }
+    // constexpr void scale(float s) { scale(s, s); }
 
     constexpr bool isEmpty() const { return w <= 0.f || h <= 0.f; }
     constexpr bool isZero() const { return w <= 0.f && h <= 0.f; }
@@ -175,17 +175,17 @@ constexpr Size operator-(const Size& a)
     return Size(-a.w, -a.h);
 }
 
-constexpr Size& operator+=(Size& a, const Size& b)
-{
-    a.expand(b);
-    return a;
-}
+// constexpr Size& operator+=(Size& a, const Size& b)
+// {
+//     a.expand(b);
+//     return a;
+// }
 
-constexpr Size& operator-=(Size& a, const Size& b)
-{
-    a.expand(-b);
-    return a;
-}
+// constexpr Size& operator-=(Size& a, const Size& b)
+// {
+//     a.expand(-b);
+//     return a;
+// }
 
 class Box;
 
@@ -204,8 +204,8 @@ public:
     // constexpr void move(float d) { move(d, d); }
     // constexpr void move(const Point& p) { move(p.x, p.y); }
 
-    constexpr void scale(float sx, float sy) { x *= sx; y *= sy; w *= sx; h *= sy; }
-    constexpr void scale(float s) { scale(s, s); }
+    // constexpr void scale(float sx, float sy) { x *= sx; y *= sy; w *= sx; h *= sy; }
+    // constexpr void scale(float s) { scale(s, s); }
 
     constexpr void inflate(float dx, float dy) { x -= dx; y -= dy; w += dx * 2.f; h += dy * 2.f; }
     constexpr void inflate(float d) { inflate(d, d); }
