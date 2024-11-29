@@ -197,10 +197,10 @@ public:
     // constexpr void scale(float sx, float sy) { x *= sx; y *= sy; w *= sx; h *= sy; }
     // constexpr void scale(float s) { scale(s, s); }
 
-    constexpr void inflate(float dx, float dy) { x -= dx; y -= dy; w += dx * 2.f; h += dy * 2.f; }
-    constexpr void inflate(float d) { inflate(d, d); }
+    void inflate(float dx, float dy) { x -= dx; y -= dy; w += dx * 2.f; h += dy * 2.f; }
+    void inflate(float d) { inflate(d, d); }
 
-    constexpr Rect intersected(const Rect& rect) const;
+    Rect intersected(const Rect& rect) const;
     constexpr Rect united(const Rect& rect) const;
 
     constexpr Rect& intersect(const Rect& o);
@@ -226,21 +226,6 @@ public:
     float w{0};
     float h{0};
 };
-
-constexpr Rect Rect::intersected(const Rect& rect) const
-{
-    if(!rect.isValid())
-        return *this;
-    if(!isValid())
-        return rect;
-    auto l = std::max(x, rect.x);
-    auto t = std::max(y, rect.y);
-    auto r = std::min(x + w, rect.x + rect.w);
-    auto b = std::min(y + h, rect.y + rect.h);
-    if(l >= r || t >= b)
-        return Rect::Empty;
-    return Rect(l, t, r - l, b - t);
-}
 
 constexpr Rect Rect::united(const Rect& rect) const
 {
