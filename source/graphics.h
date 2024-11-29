@@ -92,7 +92,7 @@ public:
     constexpr Point(const plutovg_point_t& point) : Point(point.x, point.y) {}
     constexpr Point(float x, float y) : x(x), y(y) {}
 
-    void move(float dx, float dy) const {
+    void move(float dx, float dy) {
         x += dx; 
         y += dy; 
     }
@@ -108,6 +108,7 @@ public:
     float x{0};
     float y{0};
 };
+
 
 constexpr Point operator+(const Point& a, const Point& b)
 {
