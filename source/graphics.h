@@ -69,10 +69,15 @@ private:
     uint32_t m_value = 0;
 };
 
+template <typename T>
+ static const T& clamp(const T& value, const T& low, const T& high) {
+    return (value < low) ? low : (value > high) ? high : value;
+}
+
 constexpr Color Color::colorWithAlpha(float opacity) const
 {
     auto rgb = m_value & 0x00FFFFFF;
-    auto a = static_cast<int>(alpha() * std::clamp(opacity, 0.f, 1.f));
+    auto a = static_cast<int>(alpha() * clamp(opacity, 0.f, 1.f));
     return Color(rgb | a << 24);
 }
 
@@ -440,7 +445,7 @@ public:
     float descent() const;
     float height() const;
 
-    float measureText(const std::u32string_view& text) const;
+    float measureText(const std::u32string& text) const;
 
     const FontFace& face() const { return m_face; }
     float size() const { return m_size; }
@@ -517,8 +522,8 @@ public:
     void fillPath(const Path& path, FillRule fillRule, const Transform& transform);
     void strokePath(const Path& path, const StrokeData& strokeData, const Transform& transform);
 
-    void fillText(const std::u32string_view& text, const Font& font, const Point& origin, const Transform& transform);
-    void strokeText(const std::u32string_view& text, float strokeWidth, const Font& font, const Point& origin, const Transform& transform);
+    void fillText(const std::u32string& text, const Font& font, const Point& origin, const Transform& transform);
+    void strokeText(const std::u32string& text, float strokeWidth, const Font& font, const Point& origin, const Transform& transform);
 
     void clipPath(const Path& path, FillRule clipRule, const Transform& transform);
     void clipRect(const Rect& rect, FillRule clipRule, const Transform& transform);
