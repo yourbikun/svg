@@ -92,10 +92,10 @@ public:
     constexpr Point(const plutovg_point_t& point) : Point(point.x, point.y) {}
     constexpr Point(float x, float y) : x(x), y(y) {}
 
-    constexpr void move(float dx, float dy) { x += dx; y += dy; }
+    // constexpr void move(float dx, float dy) { x += dx; y += dy; }
 
-    constexpr void move(float d) { move(d, d); }
-    constexpr void move(const Point& p) { move(p.x, p.y); }
+    // constexpr void move(float d) { move(d, d); }
+    // constexpr void move(const Point& p) { move(p.x, p.y); }
 
     constexpr void scale(float sx, float sy) { x *= sx; y *= sy; }
     constexpr void scale(float s) { scale(s, s); }
@@ -122,17 +122,17 @@ constexpr Point operator-(const Point& a)
     return Point(-a.x, -a.y);
 }
 
-constexpr Point& operator+=(Point& a, const Point& b)
-{
-    a.move(b);
-    return a;
-}
+// constexpr Point& operator+=(Point& a, const Point& b)
+// {
+//     a.move(b);
+//     return a;
+// }
 
-constexpr Point& operator-=(Point& a, const Point& b)
-{
-    a.move(-b);
-    return a;
-}
+// constexpr Point& operator-=(Point& a, const Point& b)
+// {
+//     a.move(-b);
+//     return a;
+// }
 
 constexpr float operator*(const Point& a, const Point& b)
 {
