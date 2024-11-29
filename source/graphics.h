@@ -71,9 +71,8 @@ private:
 
 template <typename T>
 static constexpr T clamp(const T& value, const T& low, const T& high) {
-    if (value < low) return low;
-    if (value > high) return high;
-    return value;
+    // 使用 std::max 和 std::min 来简化逻辑
+    return (value < low) ? low : (value > high) ? high : value;
 }
 
 
