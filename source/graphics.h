@@ -59,7 +59,7 @@ public:
     constexpr bool isVisible() const { return alpha() > 0; }
 
     constexpr Color opaqueColor() const { return Color(m_value | 0xFF000000); }
-    constexpr Color colorWithAlpha(float opacity) const;
+    Color colorWithAlpha(float opacity) const;
 
     static const Color Transparent;
     static const Color Black;
@@ -77,7 +77,7 @@ static constexpr T clamp(const T& value, const T& low, const T& high) {
 
 
 
-constexpr Color Color::colorWithAlpha(float opacity) const
+Color Color::colorWithAlpha(float opacity) const
 {
     auto rgb = m_value & 0x00FFFFFF;
     auto a = static_cast<int>(alpha() * clamp(opacity, 0.f, 1.f));
