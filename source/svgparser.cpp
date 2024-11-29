@@ -714,7 +714,7 @@ bool Document::parse(const char* data, size_t length)
         if(currentElement) {
             auto text = input.substr(0, input.find('<'));
             handleText(text, false);
-            intput = input.substr(text.length());
+            input = input.substr(text.length());
         } else {
             if(!skipOptionalSpaces(input)) {
                 break;
