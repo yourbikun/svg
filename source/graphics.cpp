@@ -51,7 +51,7 @@ Rect& Rect::unite(const Rect& o)
     return *this;
 }
 
-constexpr Rect Rect::intersected(const Rect& rect) const
+Rect Rect::intersected(const Rect& rect) const
 {
     if(!rect.isValid())
         return *this;
