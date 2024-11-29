@@ -26,6 +26,31 @@ Rect::Rect(const Box& box)
 {
 }
 
+Rect Rect::united(const Rect& rect) const
+{
+    if(!rect.isValid())
+        return *this;
+    if(!isValid())
+        return rect;
+    auto l = std::min(x, rect.x);
+    auto t = std::min(y, rect.y);
+    auto r = std::max(x + w, rect.x + rect.w);
+    auto b = std::max(y + h, rect.y + rect.h);
+    return Rect(l, t, r - l, b - t);
+}
+
+Rect& Rect::intersect(const Rect& o)
+{
+    *this = intersected(o);
+    return *this;
+}
+
+Rect& Rect::unite(const Rect& o)
+{
+    *this = united(o);
+    return *this;
+}
+
 constexpr Rect Rect::intersected(const Rect& rect) const
 {
     if(!rect.isValid())
