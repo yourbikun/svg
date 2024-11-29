@@ -70,11 +70,12 @@ private:
 };
 
 template <typename T>
-static constexpr const T& clamp(const T& value, const T& low, const T& high) {
+static constexpr T clamp(const T& value, const T& low, const T& high) {
     if (value < low) return low;
     if (value > high) return high;
     return value;
 }
+
 
 
 constexpr Color Color::colorWithAlpha(float opacity) const
@@ -84,20 +85,24 @@ constexpr Color Color::colorWithAlpha(float opacity) const
     return Color(rgb | a << 24);
 }
 
+
 class Point {
 public:
     constexpr Point() = default;
     constexpr Point(const plutovg_point_t& point) : Point(point.x, point.y) {}
     constexpr Point(float x, float y) : x(x), y(y) {}
 
-    constexpr void move(float dx, float dy) { x += dx; y += dy; }
-    constexpr void move(float d) { move(d, d); }
-    constexpr void move(const Point& p) { move(p.x, p.y); }
+    void move(float dx, float dy) const {
+        x += dx; 
+        y += dy; 
+    }
+    void move(float d) { move(d, d); }
+    void move(const Point& p) { move(p.x, p.y); }
 
-    constexpr void scale(float sx, float sy) { x *= sx; y *= sy; }
-    constexpr void scale(float s) { scale(s, s); }
+    void scale(float sx, float sy) { x *= sx; y *= sy; }
+    void scale(float s) { scale(s, s); }
 
-    constexpr float dot(const Point& p) const { return x * p.x + y * p.y; }
+    float dot(const Point& p) const { return x * p.x + y * p.y; }
 
 public:
     float x{0};
