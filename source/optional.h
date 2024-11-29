@@ -20,14 +20,14 @@ public:
         if (!has_value) {
             throw std::runtime_error("Attempt to access value in an empty Optional");
         }
-        return value;
+        return op_value;
     }
 
     const T& value() const {
         if (!has_value) {
             throw std::runtime_error("Attempt to access value in an empty Optional");
         }
-        return value;
+        return op_value;
     }
 
     // 支持从 nullptr 或 nullopt_t 转换为 Optional
@@ -38,7 +38,7 @@ public:
 
 private:
     bool has_value;
-    T value;
+    T op_value;
 };
 
 // nullopt_t 表示没有值的状态
