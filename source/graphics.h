@@ -70,9 +70,12 @@ private:
 };
 
 template <typename T>
- static const T& clamp(const T& value, const T& low, const T& high) {
-    return (value < low) ? low : (value > high) ? high : value;
+static constexpr const T& clamp(const T& value, const T& low, const T& high) {
+    if (value < low) return low;
+    if (value > high) return high;
+    return value;
 }
+
 
 constexpr Color Color::colorWithAlpha(float opacity) const
 {
@@ -425,7 +428,7 @@ private:
 class FontFaceCache {
 public:
     bool addFontFace(const std::string& family, bool bold, bool italic, const FontFace& face);
-    FontFace getFontFace(const std::string_view& family, bool bold, bool italic);
+    FontFace getFontFace(const std::string& family, bool bold, bool italic);
 
 private:
     FontFaceCache();
