@@ -46,6 +46,24 @@ public:
         return *this;
     }
 
+    // 重载操作符!，使得 !Optional 可以检查是否为空
+    explicit operator bool() const {
+        return op_has_value;  // 如果有值，返回 true；否则返回 false
+    }
+
+    bool operator!() const {
+        return !op_has_value;  // 如果没有值，返回 true，否则返回 false
+    }
+
+    // 重载逻辑运算符 || 和 &&，使得可以与 Optional 一起使用
+    bool operator||(const Optional<T>& other) const {
+        return has_value() || other.has_value();
+    }
+
+    bool operator&&(const Optional<T>& other) const {
+        return has_value() && other.has_value();
+    }
+
 private:
     bool op_has_value;  // 标记是否有值
     T op_value;         // 存储值
