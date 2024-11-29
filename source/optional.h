@@ -64,6 +64,11 @@ public:
         return has_value() && other.has_value();
     }
 
+    // 额外添加的 value_or 方法，类似于 std::optional 的 value_or 方法
+    T value_or(const T& default_value) const {
+        return op_has_value ? op_value : default_value;
+    }
+
 private:
     bool op_has_value;  // 标记是否有值
     T op_value;         // 存储值
