@@ -27,15 +27,7 @@ bool skipDelimiter(std::string& input, char delimiter);
 
 bool skipString(std::string& input, const std::string& value);
 
-constexpr bool isIntegralDigit(char ch, int base)
-{
-    if(IS_NUM(ch))
-        return ch - '0' < base;
-    if(IS_ALPHA(ch))
-        return (ch >= 'a' && ch < 'a' + std::min(base, 36) - 10) || (ch >= 'A' && ch < 'A' + std::min(base, 36) - 10);
-    return false;
-}
-
+bool isIntegralDigit(char ch, int base);
 template<typename T>
 inline bool parseInteger(std::string& input, T& integer, int base = 10)
 {
