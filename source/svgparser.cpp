@@ -153,17 +153,17 @@ bool RuleData::matchSimpleSelector(const SimpleSelector& selector, const SVGElem
     return true;
 }
 
-constexpr bool equals(const std::string& value, const std::string& subvalue)
+bool equals(const std::string& value, const std::string& subvalue)
 {
     return value.compare(subvalue) == 0;
 }
 
-constexpr bool contains(const std::string& value, const std::string& subvalue)
+bool contains(const std::string& value, const std::string& subvalue)
 {
     return value.find(subvalue) != std::string::npos;
 }
 
-constexpr bool includes(const std::string& value, const std::string& subvalue)
+bool includes(const std::string& value, const std::string& subvalue)
 {
     if(subvalue.empty() || subvalue.length() > value.length())
         return false;
@@ -181,21 +181,21 @@ constexpr bool includes(const std::string& value, const std::string& subvalue)
     return false;
 }
 
-constexpr bool startswith(const std::string& value, const std::string& subvalue)
+bool startswith(const std::string& value, const std::string& subvalue)
 {
     if(subvalue.empty() || subvalue.length() > value.length())
         return false;
     return subvalue == value.substr(0, subvalue.size());
 }
 
-constexpr bool endswith(const std::string& value, const std::string& subvalue)
+bool endswith(const std::string& value, const std::string& subvalue)
 {
     if(subvalue.empty() || subvalue.length() > value.length())
         return false;
     return subvalue == value.substr(value.size() - subvalue.size(), subvalue.size());
 }
 
-constexpr bool dashequals(const std::string& value, const std::string& subvalue)
+bool dashequals(const std::string& value, const std::string& subvalue)
 {
     if(startswith(value, subvalue))
         return (value.length() == subvalue.length() || value.at(subvalue.length()) == '-');
