@@ -15,6 +15,15 @@ void stripTrailingSpaces(std::string& input)
     }
 }
 
+bool isIntegralDigit(char ch, int base)
+{
+    if(IS_NUM(ch))
+        return ch - '0' < base;
+    if(IS_ALPHA(ch))
+        return (ch >= 'a' && ch < 'a' + std::min(base, 36) - 10) || (ch >= 'A' && ch < 'A' + std::min(base, 36) - 10);
+    return false;
+}
+
 bool skipDelimiter(std::string& input, char delimiter)
 {
     if(!input.empty() && input.front() == delimiter) {
