@@ -125,13 +125,13 @@ constexpr Point operator-(const Point& a)
     return Point(-a.x, -a.y);
 }
 
-constexpr Point& operator+=(Point& a, const Point& b)
+Point& operator+=(Point& a, const Point& b)
 {
     a.move(b);
     return a;
 }
 
-constexpr Point& operator-=(Point& a, const Point& b)
+Point& operator-=(Point& a, const Point& b)
 {
     a.move(-b);
     return a;
