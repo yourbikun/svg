@@ -201,10 +201,10 @@ public:
     void inflate(float d) { inflate(d, d); }
 
     Rect intersected(const Rect& rect) const;
-    constexpr Rect united(const Rect& rect) const;
+    Rect united(const Rect& rect) const;
 
-    constexpr Rect& intersect(const Rect& o);
-    constexpr Rect& unite(const Rect& o);
+    Rect& intersect(const Rect& o);
+    Rect& unite(const Rect& o);
 
     constexpr Point origin() const { return Point(x, y); }
     constexpr Size size() const { return Size(w, h); }
@@ -227,30 +227,7 @@ public:
     float h{0};
 };
 
-constexpr Rect Rect::united(const Rect& rect) const
-{
-    if(!rect.isValid())
-        return *this;
-    if(!isValid())
-        return rect;
-    auto l = std::min(x, rect.x);
-    auto t = std::min(y, rect.y);
-    auto r = std::max(x + w, rect.x + rect.w);
-    auto b = std::max(y + h, rect.y + rect.h);
-    return Rect(l, t, r - l, b - t);
-}
 
-constexpr Rect& Rect::intersect(const Rect& o)
-{
-    *this = intersected(o);
-    return *this;
-}
-
-constexpr Rect& Rect::unite(const Rect& o)
-{
-    *this = united(o);
-    return *this;
-}
 
 class Matrix;
 
