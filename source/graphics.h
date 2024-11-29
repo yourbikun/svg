@@ -76,15 +76,6 @@ static constexpr T clamp(const T& value, const T& low, const T& high) {
 }
 
 
-
-Color Color::colorWithAlpha(float opacity) const
-{
-    auto rgb = m_value & 0x00FFFFFF;
-    auto a = static_cast<int>(alpha() * clamp(opacity, 0.f, 1.f));
-    return Color(rgb | a << 24);
-}
-
-
 class Point {
 public:
     constexpr Point() = default;
