@@ -24,7 +24,7 @@ public:
     }
 
     const T& value() const {
-        if (!has_value) {
+        if (!op_has_value) {
             throw std::runtime_error("Attempt to access value in an empty Optional");
         }
         return op_value;
@@ -32,12 +32,12 @@ public:
 
     // 支持从 nullptr 或 nullopt_t 转换为 Optional
     Optional& operator=(std::nullptr_t) {
-        has_value = false;
+        op_has_value = false;
         return *this;
     }
 
 private:
-    bool has_value;
+    bool op_has_value;
     T op_value;
 };
 
