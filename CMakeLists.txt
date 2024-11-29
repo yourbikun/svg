@@ -27,6 +27,7 @@ set(lunasvg_sources
     source/svgproperty.cpp
     source/svgrenderstate.cpp
     source/svgtextelement.cpp
+    source/svgparserutils.cpp
 )
 
 set(lunasvg_headers
