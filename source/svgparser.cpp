@@ -172,7 +172,7 @@ bool includes(const std::string& value, const std::string& subvalue)
         skipOptionalSpaces(input);
         std::string start(input);
         while(!input.empty() && !IS_WS(input.front()))
-            input.remove_prefix(1);
+            input = input.substr(1);
         if(subvalue == start.substr(0, start.length() - input.length())) {
             return true;
         }
