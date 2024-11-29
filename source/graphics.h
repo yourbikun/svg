@@ -39,27 +39,27 @@ enum class SpreadMethod : uint8_t {
 
 class Color {
 public:
-     Color() = default;
-     explicit Color(uint32_t value) : m_value(value) {}
-     Color(int r, int g, int b, int a = 255) : m_value(a << 24 | r << 16 | g << 8 | b) {}
+    constexpr Color() = default;
+    constexpr explicit Color(uint32_t value) : m_value(value) {}
+    constexpr Color(int r, int g, int b, int a = 255) : m_value(a << 24 | r << 16 | g << 8 | b) {}
 
-     uint8_t alpha() const { return (m_value >> 24) & 0xff; }
-     uint8_t red() const { return (m_value >> 16) & 0xff; }
-     uint8_t green() const { return (m_value >> 8) & 0xff; }
-     uint8_t blue() const { return (m_value >> 0) & 0xff; }
+    constexpr uint8_t alpha() const { return (m_value >> 24) & 0xff; }
+    constexpr uint8_t red() const { return (m_value >> 16) & 0xff; }
+    constexpr uint8_t green() const { return (m_value >> 8) & 0xff; }
+    constexpr uint8_t blue() const { return (m_value >> 0) & 0xff; }
 
-     float alphaF() const { return alpha() / 255.f; }
-     float redF() const { return red() / 255.f; }
-     float greenF() const { return green() / 255.f; }
-     float blueF() const { return blue() / 255.f; }
+    constexpr float alphaF() const { return alpha() / 255.f; }
+    constexpr float redF() const { return red() / 255.f; }
+    constexpr float greenF() const { return green() / 255.f; }
+    constexpr float blueF() const { return blue() / 255.f; }
 
-     uint32_t value() const { return m_value; }
+    constexpr uint32_t value() const { return m_value; }
 
-     bool isOpaque() const { return alpha() == 255; }
-     bool isVisible() const { return alpha() > 0; }
+    constexpr bool isOpaque() const { return alpha() == 255; }
+    constexpr bool isVisible() const { return alpha() > 0; }
 
-     Color opaqueColor() const { return Color(m_value | 0xFF000000); }
-    Color colorWithAlpha(float opacity) const;
+    constexpr Color opaqueColor() const { return Color(m_value | 0xFF000000); }
+    constexpr Color colorWithAlpha(float opacity) const;
 
     static const Color Transparent;
     static const Color Black;
@@ -69,113 +69,108 @@ private:
     uint32_t m_value = 0;
 };
 
-// 自定义的  clamp 函数
-template <typename T>
- static const T& clamp(const T& value, const T& low, const T& high) {
-    return (value < low) ? low : (value > high) ? high : value;
-}
-
-Color Color::colorWithAlpha(float opacity) const {
-    auto rgb = m_value & 0x00FFFFFF;  // 获取 RGB 部分
-    auto a = static_cast<int>(alpha() * clamp(opacity, 0.f, 1.f) * 255.f);  // 计算新的 alpha 值
-    return Color(rgb | (a << 24));  // 合成新的颜色值并返回
+constexpr Color Color::colorWithAlpha(float opacity) const
+{
+    auto rgb = m_value & 0x00FFFFFF;
+    auto a = static_cast<int>(alpha() * std::clamp(opacity, 0.f, 1.f));
+    return Color(rgb | a << 24);
 }
 
 class Point {
 public:
-     Point() = default;
-     Point(const plutovg_point_t& point) : Point(point.x, point.y) {}
-     Point(float x, float y) : x(x), y(y) {}
+    constexpr Point() = default;
+    constexpr Point(const plutovg_point_t& point) : Point(point.x, point.y) {}
+    constexpr Point(float x, float y) : x(x), y(y) {}
 
-    void move(float dx, float dy) { x += dx; y += dy; }
-     void move(float d) { move(d, d); }
-     void move(const Point& p) { move(p.x, p.y); }
+    constexpr void move(float dx, float dy) { x += dx; y += dy; }
+    constexpr void move(float d) { move(d, d); }
+    constexpr void move(const Point& p) { move(p.x, p.y); }
 
-     void scale(float sx, float sy) { x *= sx; y *= sy; }
-     void scale(float s) { scale(s, s); }
+    constexpr void scale(float sx, float sy) { x *= sx; y *= sy; }
+    constexpr void scale(float s) { scale(s, s); }
 
-     float dot(const Point& p) const { return x * p.x + y * p.y; }
+    constexpr float dot(const Point& p) const { return x * p.x + y * p.y; }
 
 public:
     float x{0};
     float y{0};
 };
 
- Point operator+(const Point& a, const Point& b)
+constexpr Point operator+(const Point& a, const Point& b)
 {
     return Point(a.x + b.x, a.y + b.y);
 }
 
- Point operator-(const Point& a, const Point& b)
+constexpr Point operator-(const Point& a, const Point& b)
 {
     return Point(a.x - b.x, a.y - b.y);
 }
 
- Point operator-(const Point& a)
+constexpr Point operator-(const Point& a)
 {
     return Point(-a.x, -a.y);
 }
 
- Point& operator+=(Point& a, const Point& b)
+constexpr Point& operator+=(Point& a, const Point& b)
 {
     a.move(b);
     return a;
 }
 
- Point& operator-=(Point& a, const Point& b)
+constexpr Point& operator-=(Point& a, const Point& b)
 {
     a.move(-b);
     return a;
 }
 
- float operator*(const Point& a, const Point& b)
+constexpr float operator*(const Point& a, const Point& b)
 {
     return a.dot(b);
 }
 
 class Size {
 public:
-     Size() = default;
-     Size(float w, float h) : w(w), h(h) {}
+    constexpr Size() = default;
+    constexpr Size(float w, float h) : w(w), h(h) {}
 
-     void expand(float dw, float dh) { w += dw; h += dh; }
-     void expand(float d) { expand(d, d); }
-     void expand(const Size& s) { expand(s.w, s.h); }
+    constexpr void expand(float dw, float dh) { w += dw; h += dh; }
+    constexpr void expand(float d) { expand(d, d); }
+    constexpr void expand(const Size& s) { expand(s.w, s.h); }
 
-     void scale(float sw, float sh) { w *= sw; h *= sh; }
-     void scale(float s) { scale(s, s); }
+    constexpr void scale(float sw, float sh) { w *= sw; h *= sh; }
+    constexpr void scale(float s) { scale(s, s); }
 
-     bool isEmpty() const { return w <= 0.f || h <= 0.f; }
-     bool isZero() const { return w <= 0.f && h <= 0.f; }
-     bool isValid() const { return w >= 0.f && h >= 0.f; }
+    constexpr bool isEmpty() const { return w <= 0.f || h <= 0.f; }
+    constexpr bool isZero() const { return w <= 0.f && h <= 0.f; }
+    constexpr bool isValid() const { return w >= 0.f && h >= 0.f; }
 
 public:
     float w{0};
     float h{0};
 };
 
- Size operator+(const Size& a, const Size& b)
+constexpr Size operator+(const Size& a, const Size& b)
 {
     return Size(a.w + b.w, a.h + b.h);
 }
 
- Size operator-(const Size& a, const Size& b)
+constexpr Size operator-(const Size& a, const Size& b)
 {
     return Size(a.w - b.w, a.h - b.h);
 }
 
- Size operator-(const Size& a)
+constexpr Size operator-(const Size& a)
 {
     return Size(-a.w, -a.h);
 }
 
- Size& operator+=(Size& a, const Size& b)
+constexpr Size& operator+=(Size& a, const Size& b)
 {
     a.expand(b);
     return a;
 }
 
- Size& operator-=(Size& a, const Size& b)
+constexpr Size& operator-=(Size& a, const Size& b)
 {
     a.expand(-b);
     return a;
@@ -185,40 +180,40 @@ class Box;
 
 class Rect {
 public:
-     Rect() = default;
-     explicit Rect(const Size& size) : Rect(size.w, size.h) {}
-     Rect(float width, float height) : Rect(0, 0, width, height) {}
-     Rect(const Point& origin, const Size& size) : Rect(origin.x, origin.y, size.w, size.h) {}
-     Rect(const plutovg_rect_t& rect) : Rect(rect.x, rect.y, rect.w, rect.h) {}
-     Rect(float x, float y, float w, float h) : x(x), y(y), w(w), h(h) {}
+    constexpr Rect() = default;
+    constexpr explicit Rect(const Size& size) : Rect(size.w, size.h) {}
+    constexpr Rect(float width, float height) : Rect(0, 0, width, height) {}
+    constexpr Rect(const Point& origin, const Size& size) : Rect(origin.x, origin.y, size.w, size.h) {}
+    constexpr Rect(const plutovg_rect_t& rect) : Rect(rect.x, rect.y, rect.w, rect.h) {}
+    constexpr Rect(float x, float y, float w, float h) : x(x), y(y), w(w), h(h) {}
 
     Rect(const Box& box);
 
-     void move(float dx, float dy) { x += dx; y += dy; }
-     void move(float d) { move(d, d); }
-     void move(const Point& p) { move(p.x, p.y); }
+    constexpr void move(float dx, float dy) { x += dx; y += dy; }
+    constexpr void move(float d) { move(d, d); }
+    constexpr void move(const Point& p) { move(p.x, p.y); }
 
-     void scale(float sx, float sy) { x *= sx; y *= sy; w *= sx; h *= sy; }
-     void scale(float s) { scale(s, s); }
+    constexpr void scale(float sx, float sy) { x *= sx; y *= sy; w *= sx; h *= sy; }
+    constexpr void scale(float s) { scale(s, s); }
 
-     void inflate(float dx, float dy) { x -= dx; y -= dy; w += dx * 2.f; h += dy * 2.f; }
-     void inflate(float d) { inflate(d, d); }
+    constexpr void inflate(float dx, float dy) { x -= dx; y -= dy; w += dx * 2.f; h += dy * 2.f; }
+    constexpr void inflate(float d) { inflate(d, d); }
 
-     Rect intersected(const Rect& rect) const;
-     Rect united(const Rect& rect) const;
+    constexpr Rect intersected(const Rect& rect) const;
+    constexpr Rect united(const Rect& rect) const;
 
-     Rect& intersect(const Rect& o);
-     Rect& unite(const Rect& o);
+    constexpr Rect& intersect(const Rect& o);
+    constexpr Rect& unite(const Rect& o);
 
-     Point origin() const { return Point(x, y); }
-     Size size() const { return Size(w, h); }
+    constexpr Point origin() const { return Point(x, y); }
+    constexpr Size size() const { return Size(w, h); }
 
-     float right() const { return x + w; }
-     float bottom() const { return y + h; }
+    constexpr float right() const { return x + w; }
+    constexpr float bottom() const { return y + h; }
 
-     bool isEmpty() const { return w <= 0.f || h <= 0.f; }
-     bool isZero() const { return w <= 0.f && h <= 0.f; }
-     bool isValid() const { return w >= 0.f && h >= 0.f; }
+    constexpr bool isEmpty() const { return w <= 0.f || h <= 0.f; }
+    constexpr bool isZero() const { return w <= 0.f && h <= 0.f; }
+    constexpr bool isValid() const { return w >= 0.f && h >= 0.f; }
 
     static const Rect Empty;
     static const Rect Invalid;
@@ -231,7 +226,7 @@ public:
     float h{0};
 };
 
- Rect Rect::intersected(const Rect& rect) const
+constexpr Rect Rect::intersected(const Rect& rect) const
 {
     if(!rect.isValid())
         return *this;
@@ -246,7 +241,7 @@ public:
     return Rect(l, t, r - l, b - t);
 }
 
- Rect Rect::united(const Rect& rect) const
+constexpr Rect Rect::united(const Rect& rect) const
 {
     if(!rect.isValid())
         return *this;
@@ -259,13 +254,13 @@ public:
     return Rect(l, t, r - l, b - t);
 }
 
- Rect& Rect::intersect(const Rect& o)
+constexpr Rect& Rect::intersect(const Rect& o)
 {
     *this = intersected(o);
     return *this;
 }
 
- Rect& Rect::unite(const Rect& o)
+constexpr Rect& Rect::unite(const Rect& o)
 {
     *this = united(o);
     return *this;
@@ -425,7 +420,7 @@ private:
 class FontFaceCache {
 public:
     bool addFontFace(const std::string& family, bool bold, bool italic, const FontFace& face);
-    FontFace getFontFace(const std::string& family, bool bold, bool italic);
+    FontFace getFontFace(const std::string_view& family, bool bold, bool italic);
 
 private:
     FontFaceCache();
@@ -445,7 +440,7 @@ public:
     float descent() const;
     float height() const;
 
-    float measureText(const std::u32string& text) const;
+    float measureText(const std::u32string_view& text) const;
 
     const FontFace& face() const { return m_face; }
     float size() const { return m_size; }
@@ -522,8 +517,8 @@ public:
     void fillPath(const Path& path, FillRule fillRule, const Transform& transform);
     void strokePath(const Path& path, const StrokeData& strokeData, const Transform& transform);
 
-    void fillText(const std::u32string& text, const Font& font, const Point& origin, const Transform& transform);
-    void strokeText(const std::u32string& text, float strokeWidth, const Font& font, const Point& origin, const Transform& transform);
+    void fillText(const std::u32string_view& text, const Font& font, const Point& origin, const Transform& transform);
+    void strokeText(const std::u32string_view& text, float strokeWidth, const Font& font, const Point& origin, const Transform& transform);
 
     void clipPath(const Path& path, FillRule clipRule, const Transform& transform);
     void clipRect(const Rect& rect, FillRule clipRule, const Transform& transform);
